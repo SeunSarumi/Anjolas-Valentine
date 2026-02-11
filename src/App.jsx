@@ -55,7 +55,7 @@ function App() {
       {/* ✅ After clicking Yes, show celebration content */}
       {accepted ? (
         <>
-          <h1 className="yayText">Yay! 💖</h1>
+          <h1 className="yayText">YAY! 🎉</h1>
 
           <img
             className="yayGif"
