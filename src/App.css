@@ -3,10 +3,11 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  transition: all 0.4s;
 }
 
 .container {
-  height: 35rem;
+  height: fit-content;
   width: 70rem;
   background-color: #fff;
   border-radius: 20px;
@@ -77,4 +78,53 @@ button {
 
 .yesBtn:hover {
   transform: scale(1.3);
+}
+
+.yesBtn:active {
+  transform: scale(0.92);
+  box-shadow: 0 0.5rem 1rem rgba(255, 0, 0, 0.4);
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.yesBtn.accepted {
+  background-color: #ff2f6d;
+  box-shadow: 0 0 2rem rgba(255, 47, 109, 0.6);
+  transform: scale(1.1);
+}
+
+.yesBtn {
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s,
+    background-color 0.3s;
+}
+
+.yesBtn.accepted {
+  animation: pulse 0.8s ease-in-out infinite;
+  box-shadow: 0 0 2rem rgba(255, 0, 0, 0.5);
+}
+
+.yayText {
+  margin-top: 1rem;
+  font-size: 4rem;
+  color: #ff2f6d;
+}
+
+.yayGif {
+  margin-bottom: 0.5rem;
+  width: 25%;
+  max-width: 52rem;
+  /* border-radius: 18px; */
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15);
 }

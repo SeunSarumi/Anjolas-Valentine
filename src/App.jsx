@@ -2,10 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import "./App.css";
 
 function App() {
-  const playRef = useRef(null); // the playground area (btnContainer)
-  const noRef = useRef(null); // the No button itself
+  const playRef = useRef(null);
+  const noRef = useRef(null);
 
   const [pos, setPos] = useState({ x: 0, y: 0 });
+  const [accepted, setAccepted] = useState(false);
 
   const placeNoRandomly = () => {
     const play = playRef.current;
@@ -18,19 +19,19 @@ function App() {
     const maxX = Math.max(0, playRect.width - btnRect.width);
     const maxY = Math.max(0, playRect.height - btnRect.height);
 
-    const x = Math.random() * maxX;
-    const y = Math.random() * maxY;
-
-    setPos({ x, y });
+    setPos({
+      x: Math.random() * maxX,
+      y: Math.random() * maxY,
+    });
   };
 
-  // Put it somewhere on first render
   useEffect(() => {
     placeNoRandomly();
   }, []);
 
-  // If you want it to dodge before you even touch it:
   const handleMouseMove = (e) => {
+    if (accepted) return;
+
     const noBtn = noRef.current;
     if (!noBtn) return;
 
@@ -40,7 +41,6 @@ function App() {
 
     const dist = Math.hypot(e.clientX - centerX, e.clientY - centerY);
 
-    // tweak this number for difficulty (bigger = harder to catch)
     if (dist < 100) placeNoRandomly();
   };
 
@@ -51,20 +51,42 @@ function App() {
         src="./images/heart-img.png"
         alt="heart image"
       />
-      <h1 className="header">Will you be Anjola&apos;s Valentine</h1>
 
-      <div className="btnContainer" ref={playRef} onMouseMove={handleMouseMove}>
-        <button className="yesBtn">Yes</button>
+      {/* ✅ After clicking Yes, show celebration content */}
+      {accepted ? (
+        <>
+          <h1 className="yayText">Yay! 💖</h1>
 
-        <button
-          ref={noRef}
-          className="noBtn"
-          onMouseEnter={placeNoRandomly}
-          style={{ left: `${pos.x}px`, top: `${pos.y}px` }}
-        >
-          No
-        </button>
-      </div>
+          <img
+            className="yayGif"
+            src="https://media0.giphy.com/media/v1.Y2lkPTZjMDliOTUycDRtMWxjYjJpZ2RqNW9naXdoYnk0OGtqa3c3bHpieGMyMXRmY3BzdiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/26ufdipQqU2lhNA4g/source.gif"
+            alt="celebration gif"
+          />
+        </>
+      ) : (
+        <>
+          <h1 className="header">Will you be Anjola&apos;s Valentine</h1>
+
+          <div
+            className="btnContainer"
+            ref={playRef}
+            onMouseMove={handleMouseMove}
+          >
+            <button className="yesBtn" onClick={() => setAccepted(true)}>
+              Yes
+            </button>
+
+            <button
+              ref={noRef}
+              className="noBtn"
+              onMouseEnter={placeNoRandomly}
+              style={{ left: `${pos.x}px`, top: `${pos.y}px` }}
+            >
+              No
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 }
